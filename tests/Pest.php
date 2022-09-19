@@ -11,6 +11,9 @@
 |
 */
 
+use App\Models\Post;
+use App\Models\User;
+
 uses(Tests\TestCase::class)->in('Feature');
 
 /*
@@ -42,4 +45,58 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+function userLogin($user = null) {
+    return test()->actingAs($user ?? User::factory()->create());
+}
+
+function persistUser(){
+    return User::factory()->make();
+}
+
+function createUser() {
+    return User::factory()->create([
+        'password' => 'password'
+    ]);
+}
+
+function createAdminPosts() {
+    $user = User::factory()->adminRole()->create();
+
+    return Post::factory()
+        ->count(3)
+        ->for($user)
+        ->create();
+}
+
+function persistAdminPosts() {
+    $user = User::factory()->adminRole()->create();
+
+    return Post::factory()
+        ->count(3)
+        ->for($user)
+        ->make();
+}
+
+function createUserWithPosts() {
+    return User::factory()
+        ->has(Post::factory()->count(3))
+        ->create();
+}
+
+function actingAs(string $driver = null)
+{
+    return test()->actingAs(User::factory()->create(), $driver);
+}
+
+function persistExternalPostData() {
+
+    $persistData = persistAdminPosts();
+
+    return [
+        'status' => 'ok',
+        'count' => $persistData->count(),
+        'articles' => $persistData->toArray()
+    ];
 }
