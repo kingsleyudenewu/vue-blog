@@ -18,6 +18,7 @@ A simple application using Laravel 9 and Vue3 with Vuex
     - Generate your laravel key
     - Run php artisan migrate
     - Run php artisan db:seed to generate dummy data for user 
+    - Switch to the vue folder and type on your console  npm run dev
     - To run your <b>TEST</b> go to your console and type ./vendor/bin/phpunit
     - Required PHP version 8.0
 </pre>
