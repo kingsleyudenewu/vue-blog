@@ -6,6 +6,8 @@ namespace App\Traits;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse as LaravelJsonResponse;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Fluent;
@@ -138,8 +140,16 @@ trait ApiResponse
     {
         $response = ["status" => "success", 'message' => $message];
 
-        if (null !== $data) {
+        if (!is_null($data)) {
             $response['data'] = $data;
+        }
+
+        if ($data instanceof LaravelJsonResponse) {
+            $data = $data->getData(true);
+
+            $response['data'] = Arr::get($data, 'data');
+            $response['meta'] = Arr::get($data, 'meta');
+            $response['links'] = Arr::get($data, 'links');
         }
 
         return Response::json($response, 200);
