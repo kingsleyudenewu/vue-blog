@@ -2,26 +2,34 @@ import {createRouter, createWebHistory} from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import Home from "../views/Home.vue";
+import CreatePost from "../views/CreatePost.vue";
 import DefaultLayout from '../components/DefaultLayout.vue';
 import AuthLayout from "../components/AuthLayout.vue";
 import store from "../store";
 
 const routes = [
-    // {
-    //     path: '/',
-    //     name: 'Home',
-    //     component: Home,
-    //     meta: {requiresAuth: false}
-    // },
     {
-        path:'/',
-        redirect: '/dashboard',
+        path: '/',
+        name: 'Home',
+        component: Home,
+        meta: {isGuest: true},
+    },
+    {
+        path:'/dashboard',
+        redirect: '/login',
         component: DefaultLayout,
         children: [
             {
                 path: '/dashboard',
                 name: 'Dashboard',
                 component: Dashboard,
+                meta: {requiresAuth: true}
+            },
+            {
+                path: '/add-post',
+                name: 'Add Post',
+                component: CreatePost,
                 meta: {requiresAuth: true}
             }
         ]
