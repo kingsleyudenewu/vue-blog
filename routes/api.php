@@ -16,17 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group(['prefix' => 'v1'], function () {
-    Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
-        Route::post('/register', [AuthController::class, 'register'])->name('register');
-        Route::post('/register', [AuthController::class, 'login'])->name('login');
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        return $request->user();
     });
 
-    Route::group(['prefix' => 'post', 'as' => 'post.'], function () {
-        Route::get('/user', [PostController::class, 'myPost'])->name('user');
+    Route::get('/posts', [PostController::class, 'index'])->name('post.index');
+
+    Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
+        Route::post('/register', [AuthController::class, 'register'])->name('register');
+        Route::post('/login', [AuthController::class, 'login'])->name('login');
+    });
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::group(['prefix' => 'posts', 'as' => 'post.'], function () {
+            Route::post('/', [PostController::class, 'create'])->name('user.create');
+            Route::get('/my-post', [PostController::class, 'myPost'])->name('user');
+        });
+
+        Route::post('/logout', [AuthController::class, 'logout']);
     });
 });
