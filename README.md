@@ -17,7 +17,7 @@ Node version 16
 - On the **Subscriber**, run ```php artisan serve --port=8000``` to start it.
 - Clone project
 - Run ```composer install``` for the main project
-- cd to the vue folder and run ```npm run dev```
+- cd to the vue folder and run ```npm install && npm run dev```
 - Rename .env.example to .env
 - Create you database and set dbname, username and password on the new .env file
 - Copy the square one url on .env.example to .env ```SQUARE_ONE_URL```
